@@ -10,15 +10,21 @@
 
 class RRT{
 
-  list<State> _T;
+  list< State* > _T;
   double _u;
+  string _outGraph;
+  string _outPoints;
+  string _outPath;
 
 public:
 
   RRT();
+  ~RRT();
   void DisplayList();
   void Start();
-  void Save();
+  void SavePoints();
+  void SaveGraph();
+  void SavePath();
 
 };
 

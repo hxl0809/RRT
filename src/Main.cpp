@@ -26,12 +26,9 @@ int main(int argc, char** argv){
   }
 
   RRT r;
-  r.DisplayList();
+  //r.DisplayList();
   r.Start();
-  r.Save();
-
-  State s,p;
-  cout << s.Set(3,2,0,0,0).Delta( p ) << endl;
-
+  //r.SavePath();
+  //r.SavePoints();
 
 }

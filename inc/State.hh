@@ -20,21 +20,29 @@ class State{
   double _delta;
   double _phi;
 
+  list< State* > _successors;
+  State* _parent;
+
 public:
 
   State();
-  State( double x, double y, double theta, double delta, double phi );
+  State( double x, double y, double theta, double delta, double phi, State* parent = NULL );
   //State( const State& s );
+  ~State();
   State Set( double x, double y, double theta, double delta, double phi );
-  void Display();
+  State Display();
   static State RandomState();
   double Delta( State s );
-  State NearestNeighbor( list< State > l );
+  State* NearestNeighbor( list< State* > l );
   double GetX();
   double GetY();
   double GetTheta();
   double GetDelta();
   double GetPhi();
+  list<State*> GetSuccessors();
+  State* GetParent();
+  State AddSuccessor( State *s );
+  State SetParent( State *s );
 
 };
 

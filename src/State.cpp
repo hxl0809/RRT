@@ -3,22 +3,32 @@
 State::State(){
 
   _x=0; _y=0; _theta=0; _delta=0; _phi=0;
+  _parent = NULL;
 
 }
 
-State::State( double x, double y, double theta, double delta, double phi ){
+State::State( double x, double y, double theta, double delta, double phi, State* parent ){
 
   _x=x; _y=y; _theta=theta; _delta=delta; _phi=phi;
+  _parent = parent;
 
 }
 
 /*
 State::State( const State& s ){
 
-  _x=s.GetX(); _y=s.GetY(); _theta=s.GetTheta(); _delta=s.GetDelta(); _phi=s.GetPhi();
+  _x=s._x; _y=s._y; _theta=s._theta; _delta=s._delta; _phi=s._phi;
+  _successors = s._successors;
+  _parent = s._parent;
 
 }
 */
+
+State::~State(){
+
+  _successors.erase(_successors.begin(), _successors.end());
+
+}
 
 State State::Set( double x, double y, double theta, double delta, double phi ){
 
@@ -28,9 +38,10 @@ State State::Set( double x, double y, double theta, double delta, double phi ){
 
 }
 
-void State::Display(){
+State State::Display(){
 
   printf("(%f,%f,%f,%f,%f)\n",_x,_y,_theta,_delta,_phi);
+  return *this;
 
 }
 
@@ -62,20 +73,20 @@ double State::Delta( State s ){
 
 }
 
-State State::NearestNeighbor( list<State> l ){
+State* State::NearestNeighbor( list<State*> l ){
 
-  list<State>::iterator it;
+  list<State*>::iterator it;
   double minDelta;
-  State neighbor;
+  State *neighbor;
 
   it = l.begin();
   minDelta = INF;
 
   while( it != l.end() ){
 
-    if( Delta(*it) < minDelta ){
+    if( Delta(**it) < minDelta ){
       neighbor = *it;
-      minDelta = Delta( neighbor );
+      minDelta = Delta( *neighbor );
     }
     it++;
 
@@ -90,3 +101,19 @@ double State::GetY(){ return _y; }
 double State::GetTheta(){ return _theta; }
 double State::GetDelta(){ return _delta; }
 double State::GetPhi(){ return _phi; }
+list<State*> State::GetSuccessors(){ return _successors; }
+State* State::GetParent(){ return _parent; }
+
+State State::AddSuccessor( State *s ){
+
+  _successors.push_back(s);
+  return *this;
+
+}
+
+State State::SetParent( State *s ){
+
+  _parent = s;
+  return *this;
+
+}
